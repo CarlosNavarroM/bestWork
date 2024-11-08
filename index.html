@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generador de Usuario y Contraseña</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light d-flex justify-content-center align-items-center vh-100">
+  <div class="container">
+    <div class="card shadow p-4">
+      <h2 class="text-center mb-4">Generador de Usuario y Contraseña</h2>
+      <form id="userForm">
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input type="text" id="nombre" class="form-control" placeholder="Ingresa tu nombre" required>
+        </div>
+        <div class="mb-3">
+          <label for="rut" class="form-label">RUT (sin puntos y con guion)</label>
+          <input type="text" id="rut" class="form-control" placeholder="Ingresa tu RUT (ej. 12345678-9)" required>
+        </div>
+        <button type="button" class="btn btn-primary w-100" onclick="generarUsuario()">Generar Usuario y Contraseña</button>
+      </form>
+      <div class="mt-4" id="result" style="display: none;">
+        <p class="fw-bold">Tu usuario es: <span id="username"></span></p>
+        <p class="fw-bold">Contraseña: <span id="password"></span></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function generarUsuario() {
+      const nombre = document.getElementById("nombre").value.trim();
+      const rut = document.getElementById("rut").value.trim();
+
+      // Validar que el RUT tenga el formato correcto
+      const rutPattern = /^\d{7,8}-[0-9Kk]$/;
+      if (!rutPattern.test(rut)) {
+        alert("Por favor, ingresa un RUT válido (sin puntos y con guion).");
+        return;
+      }
+
+      // Procesar el nombre y RUT para crear el usuario y contraseña
+      const [rutNumber, dv] = rut.split("-");
+      const nombreFormatted = nombre.charAt(0).toUpperCase() + nombre.slice(1).toLowerCase();
+      const usuario = `${nombreFormatted}-${rutNumber.slice(-3)}-${dv}`;
+      const contraseña = rutNumber;
+
+      // Mostrar el resultado
+      document.getElementById("username").innerText = usuario;
+      document.getElementById("password").innerText = contraseña;
+      document.getElementById("result").style.display = "block";
+    }
+  </script>
+</body>
+</html>
